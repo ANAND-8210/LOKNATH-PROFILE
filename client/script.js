@@ -164,6 +164,7 @@ const packages = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
+  const DEFAULT_LOCAL_API_ORIGIN = "http://localhost:5000";
   const packageGrid = document.getElementById("package-grid");
   const packageSelect = document.getElementById("package-select");
   const bookingForm = document.getElementById("booking-form");
@@ -176,6 +177,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const focusableSelector =
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
   let lastFocusedElement = null;
+
+  const getApiBaseUrl = () => {
+    const { protocol, hostname, port } = window.location;
+    const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
+
+    if (protocol === "file:") {
+      return DEFAULT_LOCAL_API_ORIGIN;
+    }
+
+    if (isLocalhost && port && port !== "5000") {
+      return DEFAULT_LOCAL_API_ORIGIN;
+    }
+
+    return "";
+  };
+
+  const API_BASE_URL = getApiBaseUrl();
 
   const renderPackages = () => {
     if (!packageGrid || !packageSelect) {
@@ -430,7 +448,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       setSubmittingState(true);
 
-      const response = await fetch("/api/bookings", {
+      const response = await fetch(`${API_BASE_URL}/api/bookings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -438,7 +456,21 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify(bookingData)
       });
 
-      const result = await response.json();
+      const contentType = response.headers.get("content-type") || "";
+      let result = null;
+
+      if (contentType.includes("application/json")) {
+        result = await response.json();
+      } else {
+        const responseText = await response.text();
+        const looksLikeHtml = responseText.trim().startsWith("<");
+
+        throw new Error(
+          looksLikeHtml
+            ? "Backend not connected. Start the Express server and open http://localhost:5000."
+            : "Unexpected response from server."
+        );
+      }
 
       if (!response.ok) {
         throw new Error(result.message || "Something went wrong while saving the booking.");
@@ -451,8 +483,13 @@ document.addEventListener("DOMContentLoaded", () => {
       clearFieldErrors();
       closeModal();
     } catch (error) {
-      setFeedback(error.message || "Something went wrong.", "error");
-      alert("Something went wrong");
+      const message =
+        error instanceof TypeError
+          ? "Cannot reach the booking server. Start the Express server on http://localhost:5000."
+          : error.message || "Something went wrong.";
+
+      setFeedback(message, "error");
+      alert(message);
     } finally {
       setSubmittingState(false);
     }

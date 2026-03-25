@@ -1,9 +1,10 @@
 const packages = [
   {
     name: "Normal Health Checkup Package",
-    price: "₹3000",
+    price: "Rs. 3000",
     badge: "Popular",
     featured: true,
+    image: "../image1.jpg",
     tests: [
       "CBC",
       "ESR",
@@ -22,8 +23,9 @@ const packages = [
   },
   {
     name: "Advance Health Checkup Package",
-    price: "₹3500",
+    price: "Rs. 3500",
     badge: "Upgrade",
+    image: "../image2.jpg",
     tests: [
       "CBC",
       "ESR",
@@ -43,8 +45,9 @@ const packages = [
   },
   {
     name: "Diabetic Profile",
-    price: "₹1200",
+    price: "Rs. 1200",
     badge: "Diabetes Care",
+    image: "../image3.jpg",
     tests: [
       "CBC",
       "Blood Sugar Fasting",
@@ -55,8 +58,9 @@ const packages = [
   },
   {
     name: "Type 2 Diabetes Test",
-    price: "₹550",
+    price: "Rs. 550",
     badge: "Quick Test",
+    image: "../image4.jpg",
     tests: [
       "Random Blood Sugar",
       "HbA1C"
@@ -64,8 +68,9 @@ const packages = [
   },
   {
     name: "Thyroid Profile",
-    price: "₹750",
+    price: "Rs. 750",
     badge: "Thyroid Care",
+    image: "../image5.jpg",
     tests: [
       "T3",
       "T4",
@@ -76,8 +81,9 @@ const packages = [
   },
   {
     name: "Senior Citizen Health Checkup",
-    price: "₹3900",
+    price: "Rs. 3900",
     badge: "Senior Care",
+    image: "../image6.jpg",
     tests: [
       "CRP",
       "RA",
@@ -98,8 +104,9 @@ const packages = [
   },
   {
     name: "Male Full Body Checkup",
-    price: "₹4500",
+    price: "Rs. 4500",
     badge: "Men's Wellness",
+    image: "../image7.jpg",
     tests: [
       "PSA",
       "CEA",
@@ -110,8 +117,9 @@ const packages = [
   },
   {
     name: "Female Full Body Checkup",
-    price: "₹4750",
+    price: "Rs. 4750",
     badge: "Women's Wellness",
+    image: "../image8.jpg",
     tests: [
       "CA-125",
       "CEA",
@@ -122,8 +130,9 @@ const packages = [
   },
   {
     name: "Preventive Silver Profile",
-    price: "₹2200",
+    price: "Rs. 2200",
     badge: "Preventive Care",
+    image: "../image4.jpg",
     tests: [
       "CBC",
       "ESR",
@@ -138,8 +147,9 @@ const packages = [
   },
   {
     name: "Routine Health Checkup",
-    price: "₹1500",
+    price: "Rs. 1500",
     badge: "Routine Care",
+    image: "../image6.jpg",
     tests: [
       "CBC",
       "ESR",
@@ -176,6 +186,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(
         (pkg) => `
           <article class="package-card ${pkg.featured ? "featured" : ""}">
+            <figure class="card-media">
+              <img src="${pkg.image}" alt="${pkg.name}">
+            </figure>
             <div class="card-head">
               <span class="package-chip">${pkg.badge}</span>
               <h3>${pkg.name}</h3>
@@ -432,14 +445,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       setFeedback("Booking saved successfully.", "success");
-      alert("Booking Confirmed ✅");
+      alert("Booking Confirmed");
       bookingForm.reset();
       setMinimumDate();
       clearFieldErrors();
       closeModal();
     } catch (error) {
-      setFeedback(error.message || "Something went wrong ❌", "error");
-      alert("Something went wrong ❌");
+      setFeedback(error.message || "Something went wrong.", "error");
+      alert("Something went wrong");
     } finally {
       setSubmittingState(false);
     }

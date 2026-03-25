@@ -1,70 +1,134 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const header = document.querySelector(".site-header");
-  const menuToggle = document.querySelector(".menu-toggle");
-  const siteNav = document.getElementById("site-nav");
-  const form = document.getElementById("lead-form");
-  const formNote = document.getElementById("form-note");
-  const year = document.getElementById("year");
+  const modal = document.getElementById("booking-modal");
+  const bookingForm = document.getElementById("booking-form");
+  const packageSelect = document.getElementById("package-select");
+  const bookingDate = document.getElementById("booking-date");
+  const formMessage = document.getElementById("form-message");
+  const openButtons = document.querySelectorAll("[data-open-booking]");
+  const closeButtons = document.querySelectorAll("[data-close-booking]");
   const revealItems = document.querySelectorAll("[data-reveal]");
+  let lastFocusedElement = null;
 
-  const updateHeader = () => {
-    if (!header) {
+  const focusableSelector =
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+  const setMinDate = () => {
+    if (!bookingDate) {
       return;
     }
 
-    header.classList.toggle("is-scrolled", window.scrollY > 10);
+    const today = new Date();
+    const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000)
+      .toISOString()
+      .split("T")[0];
+
+    bookingDate.min = localDate;
   };
 
-  const setMenuState = (open) => {
-    if (!menuToggle || !siteNav) {
+  const openModal = (selectedPackage = "") => {
+    if (!modal) {
       return;
     }
 
-    menuToggle.setAttribute("aria-expanded", String(open));
-    siteNav.dataset.open = String(open);
-    document.body.classList.toggle("nav-open", open);
+    lastFocusedElement = document.activeElement;
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+
+    if (packageSelect) {
+      packageSelect.value = selectedPackage || "";
+    }
+
+    if (formMessage) {
+      formMessage.textContent = "";
+    }
+
+    const firstInput = modal.querySelector("input, select");
+    if (firstInput) {
+      firstInput.focus();
+    }
   };
 
-  updateHeader();
-  window.addEventListener("scroll", updateHeader, { passive: true });
+  const closeModal = () => {
+    if (!modal) {
+      return;
+    }
 
-  if (menuToggle && siteNav) {
-    setMenuState(false);
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
 
-    menuToggle.addEventListener("click", () => {
-      setMenuState(siteNav.dataset.open !== "true");
-    });
+    if (lastFocusedElement instanceof HTMLElement) {
+      lastFocusedElement.focus();
+    }
+  };
 
-    siteNav.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => setMenuState(false));
-    });
-
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 820) {
-        setMenuState(false);
-      }
-    });
-  }
-
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", (event) => {
-      const targetId = anchor.getAttribute("href");
-      if (!targetId || targetId === "#") {
-        return;
-      }
-
-      const target = document.querySelector(targetId);
-      if (!target) {
-        return;
-      }
-
-      event.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+  openButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedPackage = button.dataset.package || "";
+      openModal(selectedPackage);
     });
   });
 
+  closeButtons.forEach((button) => {
+    button.addEventListener("click", closeModal);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (!modal || !modal.classList.contains("is-open")) {
+      return;
+    }
+
+    if (event.key === "Escape") {
+      closeModal();
+      return;
+    }
+
+    if (event.key === "Tab") {
+      const focusableElements = Array.from(
+        modal.querySelectorAll(focusableSelector)
+      ).filter((element) => !element.hasAttribute("disabled"));
+
+      if (focusableElements.length === 0) {
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    }
+  });
+
+  if (bookingForm && formMessage) {
+    bookingForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(bookingForm);
+      const patientName = formData.get("name")?.toString().trim() || "Patient";
+      const chosenPackage = formData.get("package")?.toString().trim() || "selected package";
+      const appointmentDate = formData.get("date")?.toString().trim() || "your chosen date";
+
+      formMessage.textContent =
+        `Thank you, ${patientName}. Your request for ${chosenPackage} on ${appointmentDate} has been recorded.`;
+
+      bookingForm.reset();
+      setMinDate();
+
+      window.setTimeout(() => {
+        closeModal();
+      }, 1200);
+    });
+  }
+
   revealItems.forEach((item, index) => {
-    item.style.transitionDelay = `${Math.min(index * 0.05, 0.3)}s`;
+    item.style.transitionDelay = `${Math.min(index * 0.05, 0.35)}s`;
   });
 
   if ("IntersectionObserver" in window) {
@@ -77,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.14 }
     );
 
     revealItems.forEach((item) => observer.observe(item));
@@ -85,19 +149,5 @@ document.addEventListener("DOMContentLoaded", () => {
     revealItems.forEach((item) => item.classList.add("is-visible"));
   }
 
-  if (form && formNote) {
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      const nameField = form.querySelector('input[name="name"]');
-      const userName = nameField && nameField.value.trim() ? nameField.value.trim() : "Patient";
-
-      formNote.textContent = `Thanks, ${userName}. Your callback request for Labprix Diagnostics Centre has been captured on this demo website.`;
-      form.reset();
-    });
-  }
-
-  if (year) {
-    year.textContent = String(new Date().getFullYear());
-  }
+  setMinDate();
 });

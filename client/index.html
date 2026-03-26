@@ -3,329 +3,199 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta
-    name="description"
-    content="LabPrix Diagnostic online booking system for pathology tests and health packages."
-  >
+  <meta name="description" content="LabPrix Diagnostic online booking system for pathology tests and health packages.">
   <title>LabPrix Diagnostic | Health Packages and Test Booking</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css?v=20260326-2">
 </head>
+
 <body>
-  <header class="site-header">
-    <div class="container header-wrap">
-      <a href="#top" class="brand" aria-label="LabPrix Diagnostic home">
-        <span class="brand-mark">LP</span>
-        <span class="brand-text">
-          <strong>LabPrix Diagnostic</strong>
-          <small>Pathology and preventive health packages</small>
-        </span>
-      </a>
 
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#packages">Packages</a>
-        <a href="#ai-chat">AI Test Chat</a>
-        <a href="#benefits">Why Choose Us</a>
-        <a href="#contact">Contact</a>
-        <button class="nav-cta" type="button" data-open-booking>Book Now</button>
-      </nav>
-    </div>
-  </header>
+<header class="site-header">
+  <div class="container header-wrap">
+    <a href="#top" class="brand">
+      <span class="brand-mark">LP</span>
+      <span class="brand-text">
+        <strong>LabPrix Diagnostic</strong>
+        <small>Pathology and preventive health packages</small>
+      </span>
+    </a>
 
-  <main id="top">
-    <section class="hero-section">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <span class="eyebrow">Diagnostic booking experience</span>
-          <h1>LabPrix Diagnostic Health Packages</h1>
-          <p>
-            Browse well-structured health packages, compare included tests, chat with
-            our AI test guide, and submit your preferred booking date through a fast
-            and reliable online appointment form.
-          </p>
+    <nav class="site-nav">
+      <a href="#packages">Packages</a>
+      <a href="#ai-chat">AI Test Chat</a>
+      <a href="#benefits">Why Choose Us</a>
+      <a href="#contact">Contact</a>
+      <button class="nav-cta" data-open-booking>Book Now</button>
+    </nav>
+  </div>
+</header>
 
-          <div class="hero-actions">
-            <a class="primary-button" href="#packages">Explore Packages</a>
-            <button class="secondary-button" type="button" data-open-booking>Request Booking</button>
-          </div>
+<main id="top">
 
-          <div class="hero-stats">
-            <article class="stat-card">
-              <strong>Packages</strong>
-              <span>Routine, preventive, diabetic, thyroid, and full body checkups.</span>
-            </article>
-            <article class="stat-card">
-              <strong>AI Test Guide</strong>
-              <span>Ask about CBC, HbA1C, thyroid tests, package prices, and more.</span>
-            </article>
-            <article class="stat-card">
-              <strong>Why Choose Us</strong>
-              <span>👉 Trusted & Professional Service
-👉 Convenient Home Collection
-👉 Fast & Accurate Reports
-👉 Affordable Pricing
-👉 100% Hygiene & Safety
-👉 Easy Booking & Support.</span>
-            </article>
-          </div>
-        </div>
+<!-- HERO -->
+<section class="hero-section">
+  <div class="container hero-grid">
 
-        <aside class="hero-visual">
-          <article class="hero-image hero-image-large">
-            <img src="../image7.jpg" alt="Microscope and lab analysis setup">
-            <div class="hero-image-copy">
-              <span class="panel-badge">Advanced lab support</span>
-              <h2>Simple online booking for pathology packages.</h2>
-              <ul class="hero-points">
-                <li>Secure and reliable booking system.</li>
-<li>Quick and hassle-free appointment process.</li>
-<li>Trusted diagnostic services with accurate results.</li>
-            </div>
-          </article>
+    <div class="hero-copy">
+      <span class="eyebrow">Diagnostic booking experience</span>
+      <h1>LabPrix Diagnostic Health Packages</h1>
 
-          <article class="hero-image hero-image-small">
-            <img src="../image6.jpg" alt="Blood sample collection in progress">
-          </article>
+      <p>
+        Browse well-structured health packages, compare included tests, chat with
+        our AI test guide, and submit your preferred booking date easily.
+      </p>
 
-         <article class="hero-mini-card">
-  <strong>Trusted Diagnostic Services</strong>
-  <span>High-quality lab and sample collection services with professional care and safety.</span>
-</article>
+      <div class="hero-actions">
+        <a class="primary-button" href="#packages">Explore Packages</a>
+        <button class="secondary-button" data-open-booking>Request Booking</button>
+      </div>
 
-    <section class="info-strip">
-      <div class="container info-grid">
-        <article class="info-card">
-          <strong>Trusted preventive screening</strong>
-          <span>Clear package breakdowns help patients choose the right checkup faster.</span>
+      <div class="hero-stats">
+        <article class="stat-card">
+          <strong>Packages</strong>
+          <span>Routine, preventive, diabetic, thyroid, and full body checkups.</span>
+        </article>
+
+        <article class="stat-card">
+          <strong>AI Test Guide</strong>
+          <span>Ask about CBC, HbA1C, thyroid tests, package prices, and more.</span>
+        </article>
+
+        <article class="stat-card">
+          <strong>Why Choose Us</strong>
+          <span>
+            Trusted Service • Home Collection • Fast Reports • Affordable • Safe & Hygienic
+          </span>
         </article>
       </div>
-    </section>
+    </div>
 
-    <section class="packages-section" id="packages">
-      <div class="container">
-        <div class="section-heading">
-          <span class="eyebrow">Health packages</span>
-          <h2>Find the package that matches your health needs.</h2>
-          <p>
-            Each package card displays test details, included services, and pricing, with a quick option to easily book your appointment.
-          </p>
+    <!-- RIGHT SIDE FIXED -->
+    <aside class="hero-visual">
+
+      <article class="hero-image hero-image-large">
+        <img src="../image7.jpg" alt="Microscope and lab analysis setup">
+
+        <div class="hero-image-copy">
+          <span class="panel-badge">Advanced lab support</span>
+          <h2>Simple online booking for pathology packages.</h2>
+
+          <!-- ✅ FIXED UL -->
+          <ul class="hero-points">
+            <li>Secure and reliable booking system.</li>
+            <li>Quick and hassle-free appointment process.</li>
+            <li>Trusted diagnostic services with accurate results.</li>
+          </ul>
         </div>
+      </article>
 
-        <div class="packages-grid" id="package-grid"></div>
-      </div>
-    </section>
+      <article class="hero-image hero-image-small">
+        <img src="../image6.jpg" alt="Blood sample collection in progress">
+      </article>
 
-    <section class="ai-chat-section" id="ai-chat">
-      <div class="container ai-chat-grid">
-        <div class="section-heading ai-chat-copy">
-          <span class="eyebrow">AI test chat</span>
-          <h2>Ask about tests before you book.</h2>
-          <p>
-            Chat with the LabPrix AI assistant for quick details about package inclusions,
-            diabetes profiles, thyroid screening, vitamins, and other common lab tests.
-          </p>
+      <article class="hero-mini-card">
+        <strong>Trusted Diagnostic Services</strong>
+        <span>High-quality lab and sample collection services with professional care and safety.</span>
+      </article>
 
-          <div class="chat-suggestions" aria-label="Suggested questions">
-            <button
-              class="chat-suggestion"
-              type="button"
-              data-chat-question="What tests are included in the Normal Health Checkup Package?"
-            >
-              Normal package tests
-            </button>
-            <button
-              class="chat-suggestion"
-              type="button"
-              data-chat-question="Which package is best for diabetes?"
-            >
-              Best package for diabetes
-            </button>
-            <button
-              class="chat-suggestion"
-              type="button"
-              data-chat-question="Explain the Thyroid Profile tests."
-            >
-              Explain thyroid tests
-            </button>
-            <button
-              class="chat-suggestion"
-              type="button"
-              data-chat-question="What is the price of the Female Full Body Checkup?"
-            >
-              Female checkup price
-            </button>
-          </div>
-        </div>
+    </aside> <!-- ✅ IMPORTANT FIX -->
 
-        <div class="ai-chat-panel" aria-label="LabPrix AI Test Chat">
-          <div class="ai-chat-header">
-            <div>
-              <span class="panel-badge">AI Assistant</span>
-              <h3>LabPrix Test Guide</h3>
-            </div>
-            <p>
-              Ask about test meanings, package prices, included tests, or which package
-              fits a health concern best.
-            </p>
-          </div>
+  </div>
+</section>
 
-          <div
-            class="ai-chat-messages"
-            id="ai-chat-messages"
-            aria-live="polite"
-            aria-label="AI chat messages"
-          ></div>
+<!-- INFO -->
+<section class="info-strip">
+  <div class="container info-grid">
+    <article class="info-card">
+      <strong>Trusted preventive screening</strong>
+      <span>Clear package breakdowns help patients choose the right checkup faster.</span>
+    </article>
+  </div>
+</section>
 
-          <form id="ai-chat-form" class="ai-chat-form" novalidate>
-            <label class="sr-only" for="ai-chat-input">Ask about tests and packages</label>
-            <input
-              type="text"
-              id="ai-chat-input"
-              name="message"
-              placeholder="Ask about CBC, HbA1C, thyroid profile, package price..."
-              autocomplete="off"
-              required
-            >
-            <button class="submit-button ai-chat-submit" type="submit">Send</button>
-          </form>
-        </div>
-      </div>
-    </section>
+<!-- PACKAGES -->
+<section class="packages-section" id="packages">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">Health packages</span>
+      <h2>Find the package that matches your health needs.</h2>
+      <p>
+        Each package card displays test details, included services, and pricing, with a quick option to easily book your appointment.
+      </p>
+    </div>
 
-   <section class="benefits-section" id="benefits">
+    <div class="packages-grid" id="package-grid"></div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits-section" id="benefits">
   <div class="container benefits-grid">
+
     <div class="section-heading">
       <span class="eyebrow">Why Choose Us</span>
       <h2>Trusted and reliable diagnostic services for your health.</h2>
       <p>
-        We are committed to providing accurate test results, safe sample collection,
-        and a smooth booking experience for every patient.
+        We provide accurate test results, safe sample collection, and smooth booking.
       </p>
     </div>
 
     <div class="benefit-list">
       <article class="benefit-card">
-        <h3>Accurate Test Results</h3>
-        <p>We ensure precise and reliable reports using advanced testing methods.</p>
+        <h3>Accurate Results</h3>
+        <p>Reliable and precise reports.</p>
       </article>
 
       <article class="benefit-card">
-        <h3>Safe & Hygienic Collection</h3>
-        <p>All samples are collected using sterilized equipment with strict safety protocols.</p>
+        <h3>Safe Collection</h3>
+        <p>Hygienic and sterilized process.</p>
       </article>
 
       <article class="benefit-card">
-        <h3>Home Collection Available</h3>
-        <p>Our trained professionals visit your home for convenient sample collection.</p>
+        <h3>Home Service</h3>
+        <p>Sample collection at your doorstep.</p>
       </article>
 
       <article class="benefit-card">
-        <h3>Fast Report Delivery</h3>
-        <p>Get your test reports quickly without unnecessary delays.</p>
+        <h3>Fast Reports</h3>
+        <p>Quick delivery without delay.</p>
       </article>
     </div>
+
   </div>
 </section>
 
-  <footer class="site-footer" id="contact">
-    <div class="container footer-grid">
-      <div class="footer-copy">
-        <h2>LabPrix Diagnostic</h2>
-        <p>
-          Professional pathology booking for preventive health checkups, diabetic profiles,
-          thyroid screening, and complete body packages.
-        </p>
-      </div>
+</main>
 
-      <article class="footer-card">
-        <span>Phone</span>
-        <a href="tel:84548 22399">+91 84548 22399</a>
-      </article>
+<!-- FOOTER -->
+<footer class="site-footer" id="contact">
+  <div class="container footer-grid">
 
-      <article class="footer-card">
-        <span>Address</span>
-        <p>SHOP NO. 1, GAJANAN KRUPA SOC, near RANE BUILDING, opp. ज्ञानप्रकाश विद्यालय, Kaju Pada, Bhatwadi, Ghatkopar West, Mumbai, Maharashtra 400084</p>
-      </article>
-
-      <a
-        class="footer-card footer-card-link"
-        aria-label="Email LabPrix Diagnostic"
-      >
-        <span>Email</span>
-        <a href="mailto:lok8898saw@gmail.com?subject=Contact%20from%20Website&body=Hello%20Loknath,%20I%20want%20to%20connect%20with%20you">
-      lok8898saw@gmail.com</a>
-      </a>
+    <div class="footer-copy">
+      <h2>LabPrix Diagnostic</h2>
+      <p>Professional pathology booking for health checkups.</p>
     </div>
-  </footer>
 
-  <div class="modal" id="booking-modal" aria-hidden="true">
-    <div class="modal-backdrop" data-close-booking></div>
+    <article class="footer-card">
+      <span>Phone</span>
+      <a href="tel:8454822399">+91 84548 22399</a>
+    </article>
 
-    <div
-      class="modal-dialog"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="booking-title"
-    >
-      <button class="modal-close" type="button" aria-label="Close booking form" data-close-booking>
-        x
-      </button>
+    <!-- ✅ EMAIL FIX -->
+    <article class="footer-card">
+      <span>Email</span>
+      <a href="mailto:lok8898saw@gmail.com">lok8898saw@gmail.com</a>
+    </article>
 
-      <div class="modal-copy">
-        <span class="eyebrow">Book your appointment</span>
-        <h2 id="booking-title">Online Booking Form</h2>
-        <p>
-          Fill in your details below. The form sends your booking to the Express backend
-          and stores it in MongoDB after validation.
-        </p>
-        <p class="connection-status" id="connection-status" data-state="checking">
-          Checking booking server connection...
-        </p>
-      </div>
-
-      <form id="booking-form" class="booking-form" novalidate>
-        <label>
-          Full Name
-          <input type="text" name="name" placeholder="Enter full name" required>
-        </label>
-
-        <label>
-          Phone Number
-          <input type="tel" name="phone" placeholder="Enter phone number" required>
-        </label>
-
-        <label>
-          Email
-          <input type="email" name="email" placeholder="Enter email address" required>
-        </label>
-
-        <label>
-          Select Package
-          <select name="package" id="package-select" required>
-            <option value="">Choose a package</option>
-          </select>
-        </label>
-
-        <label>
-          Preferred Date
-          <input type="date" name="date" id="preferred-date" required>
-        </label>
-
-        <p class="form-feedback" id="form-feedback" aria-live="polite"></p>
-
-        <button class="submit-button" id="submit-button" type="submit">
-          <span class="button-spinner" aria-hidden="true"></span>
-          <span class="button-label">Confirm Booking</span>
-        </button>
-      </form>
-    </div>
   </div>
+</footer>
 
-  <script src="script.js?v=20260326-2"></script>
+<script src="script.js?v=20260326-2"></script>
+
 </body>
 </html>

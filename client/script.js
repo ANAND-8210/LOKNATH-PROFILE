@@ -354,7 +354,10 @@ const testDetails = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-  const API_BASE_URL = "http://localhost:5000";
+  const API_BASE_URL =
+    window.location.protocol === "http:" || window.location.protocol === "https:"
+      ? window.location.origin
+      : "http://localhost:5000";
   const API_HEALTH_URL = `${API_BASE_URL}/api/health`;
   const API_BOOKINGS_URL = `${API_BASE_URL}/api/bookings`;
   const API_REQUEST_TIMEOUT_MS = 10000;

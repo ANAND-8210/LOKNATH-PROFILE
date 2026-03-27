@@ -1,6 +1,6 @@
 # ADLS Diagnostic Center Booking System
 
-This project is a complete booking system for a diagnostic center website.
+This project is a full booking system for a diagnostic center website with a static frontend and an Express backend that can run locally or on Render.
 
 ## Project Structure
 
@@ -110,7 +110,47 @@ Once the server starts, open:
 http://localhost:5000
 ```
 
-The Express server will serve the frontend from the `client` folder.
+The Express server will serve the frontend and API from the same origin, so booking works without changing the frontend code.
+
+## Render Deployment
+
+This repo is configured for Render with [`render.yaml`](./render.yaml).
+
+### Option A: Deploy from `render.yaml`
+
+1. Push this repo to GitHub.
+2. In Render, choose `New +` -> `Blueprint`.
+3. Select your GitHub repository.
+4. Render will detect `render.yaml` and create the Node web service.
+5. Set `MONGODB_URI` in the Render dashboard if you want persistent booking storage.
+6. Deploy the service.
+
+### Option B: Create the Render Web Service Manually
+
+1. Push this repo to GitHub.
+2. In Render, choose `New +` -> `Web Service`.
+3. Connect the repository.
+4. Use these settings:
+
+```text
+Environment: Node
+Build Command: npm install
+Start Command: npm start
+```
+
+5. Add this environment variable in Render:
+
+```text
+NODE_ENV=production
+```
+
+6. Add `MONGODB_URI` if you want persistent bookings in MongoDB Atlas.
+
+### Important Render Notes
+
+- Render provides its own `PORT`, and the app now uses that automatically.
+- The frontend now uses the same site origin for `/api/health` and `/api/bookings`, so it works on Render without hardcoded localhost URLs.
+- If `MONGODB_URI` is not set or MongoDB is unavailable, the site still works, but bookings are stored only in memory and will be lost after restart.
 
 ## API Endpoint
 
@@ -148,7 +188,8 @@ Request body:
 ## Beginner Notes
 
 - `client/script.js` handles rendering packages, validation, modal behavior, and API calls.
-- `server/server.js` handles database connection, API routes, and serving the frontend.
+- `server/app.js` contains the Express app, API routes, and database startup logic.
+- `server.js` is the main entry point used by local development and Render.
 - `server/models/Booking.js` defines the MongoDB schema.
 
 ## Production Tips

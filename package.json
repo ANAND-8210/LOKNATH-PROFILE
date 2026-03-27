@@ -2,10 +2,10 @@
   "name": "adls-diagnostic-booking-system",
   "version": "1.0.0",
   "description": "Diagnostic center booking system built with HTML, CSS, vanilla JavaScript, Node.js, Express, and MongoDB.",
-  "main": "server/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node server/server.js",
-    "dev": "nodemon server/server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [
     "diagnostic-center",

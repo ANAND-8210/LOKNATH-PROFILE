@@ -354,10 +354,9 @@ const testDetails = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-  const DEFAULT_LOCAL_API_ORIGIN = "http://localhost:5000";
-  const FALLBACK_LOCAL_API_ORIGIN = "http://127.0.0.1:5000";
-  const API_PORT = "5000";
-  const API_DISCOVERY_TIMEOUT_MS = 2500;
+  const API_BASE_URL = "http://localhost:5000";
+  const API_HEALTH_URL = `${API_BASE_URL}/api/health`;
+  const API_BOOKINGS_URL = `${API_BASE_URL}/api/bookings`;
   const API_REQUEST_TIMEOUT_MS = 10000;
   const packageGrid = document.getElementById("package-grid");
   const packageSelect = document.getElementById("package-select");
@@ -376,7 +375,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const focusableSelector =
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
   let lastFocusedElement = null;
-  let resolvedApiBaseUrl = null;
   let apiResolutionPromise = null;
 
   const setConnectionStatus = (message, state) => {
@@ -933,35 +931,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 220);
   };
 
-  const getApiCandidates = () => {
-    const { protocol, hostname, origin } = window.location;
-    const candidates = [];
-
-    if (protocol !== "file:" && origin && origin !== "null") {
-      candidates.push(origin);
-    }
-
-    if ((protocol === "http:" || protocol === "https:") && hostname) {
-      candidates.push(`${protocol}//${hostname}:${API_PORT}`);
-    }
-
-    candidates.push(DEFAULT_LOCAL_API_ORIGIN, FALLBACK_LOCAL_API_ORIGIN);
-
-    return [...new Set(candidates)];
-  };
-
-  const buildApiUrl = (baseUrl, pathname) => {
-    const normalizedPath = pathname.startsWith("/") ? pathname : `/${pathname}`;
-    return `${baseUrl}${normalizedPath}`;
-  };
-
-  const requestJson = async (baseUrl, pathname, options = {}) => {
+  const requestJson = async (url, options = {}) => {
     const controller = new AbortController();
     const timeoutMs = options.timeoutMs ?? API_REQUEST_TIMEOUT_MS;
     const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
 
     try {
-      const response = await fetch(buildApiUrl(baseUrl, pathname), {
+      const response = await fetch(url, {
         ...options,
         signal: controller.signal
       });
@@ -993,11 +969,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const resolveApiBaseUrl = async (forceRefresh = false) => {
-    if (resolvedApiBaseUrl && !forceRefresh) {
-      return resolvedApiBaseUrl;
-    }
-
+  const checkBookingServerConnection = async (forceRefresh = false) => {
     if (apiResolutionPromise && !forceRefresh) {
       return apiResolutionPromise;
     }
@@ -1005,28 +977,19 @@ document.addEventListener("DOMContentLoaded", () => {
     setConnectionStatus("Checking booking server connection...", "checking");
 
     apiResolutionPromise = (async () => {
-      for (const candidate of getApiCandidates()) {
-        try {
-          const { response, data } = await requestJson(candidate, "/api/health", {
-            timeoutMs: API_DISCOVERY_TIMEOUT_MS
-          });
+      try {
+        const { response, data } = await requestJson(API_HEALTH_URL);
 
-          if (response.ok && data?.success) {
-            resolvedApiBaseUrl = candidate;
-            setConnectionStatus(`Booking server connected at ${candidate}.`, "success");
-            return candidate;
-          }
-        } catch (error) {
-          continue;
+        if (response.ok && data?.success) {
+          setConnectionStatus("Connected to booking server", "success");
+          return true;
         }
+      } catch (error) {
+        // Ignore here and fall through to the offline state below.
       }
 
-      resolvedApiBaseUrl = null;
-      setConnectionStatus(
-        "Booking server offline. Start the Express server and open http://localhost:5000.",
-        "error"
-      );
-      return null;
+      setConnectionStatus("Booking server offline", "error");
+      return false;
     })();
 
     const result = await apiResolutionPromise;
@@ -1147,9 +1110,7 @@ document.addEventListener("DOMContentLoaded", () => {
       firstField.focus();
     }
 
-    if (!resolvedApiBaseUrl) {
-      void resolveApiBaseUrl();
-    }
+    void checkBookingServerConnection();
   };
 
   const closeModal = () => {
@@ -1226,7 +1187,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderPackages();
   setMinimumDate();
-  void resolveApiBaseUrl();
+  void checkBookingServerConnection();
   appendChatMessage(
     "bot",
     "Hello!\n\nI can help with blood tests, home collection, fasting guidance, reports, and booking support.\n\nHelpful tip: Ask about CBC, fasting, report time, home blood collection, or a package name."
@@ -1304,15 +1265,13 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       setSubmittingState(true);
 
-      const apiBaseUrl = await resolveApiBaseUrl();
+      const isServerOnline = await checkBookingServerConnection();
 
-      if (!apiBaseUrl) {
-        throw new Error(
-          "Cannot reach the booking server. Start the Express server on http://localhost:5000."
-        );
+      if (!isServerOnline) {
+        throw new Error("Booking server offline");
       }
 
-      const { response, data } = await requestJson(apiBaseUrl, "/api/bookings", {
+      const { response, data } = await requestJson(API_BOOKINGS_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1327,19 +1286,18 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       }
 
-      setConnectionStatus(`Booking server connected at ${apiBaseUrl}.`, "success");
+      setConnectionStatus("Connected to booking server", "success");
       setFeedback(data?.message || "Booking saved successfully.", "success");
       bookingForm.reset();
       setMinimumDate();
       clearFieldErrors();
       window.setTimeout(closeModal, 900);
     } catch (error) {
-      resolvedApiBaseUrl = null;
-      void resolveApiBaseUrl(true);
+      void checkBookingServerConnection(true);
 
       const message =
         error instanceof TypeError
-          ? "Cannot reach the booking server. Start the Express server on http://localhost:5000."
+          ? "Booking server offline"
           : error.message || "Something went wrong.";
 
       setFeedback(message, "error");

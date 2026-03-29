@@ -82,19 +82,19 @@ https://your-service-name.onrender.com/health
 
 ## GitHub Pages Deployment
 
-1. In the frontend `index.html`, update:
-
-```html
-<script>
-  window.BOOKING_API_BASE_URL = "https://your-backend.onrender.com";
-</script>
-```
-
-2. Replace it with your real Render URL, for example:
+1. In the frontend `client/index.html`, update:
 
 ```html
 <script>
   window.BOOKING_API_BASE_URL = "https://your-service-name.onrender.com";
+</script>
+```
+
+2. Keep it as an empty string if the frontend is served by the same Render service:
+
+```html
+<script>
+  window.BOOKING_API_BASE_URL = "";
 </script>
 ```
 

@@ -408,8 +408,27 @@ const testDetails = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-  const API_BASE_URL =
-    window.BOOKING_API_BASE_URL || "https://your-backend.onrender.com";
+  const resolveApiBaseUrl = () => {
+    const configuredBaseUrl =
+      typeof window.BOOKING_API_BASE_URL === "string"
+        ? window.BOOKING_API_BASE_URL.trim().replace(/\/+$/, "")
+        : "";
+
+    if (configuredBaseUrl) {
+      return configuredBaseUrl;
+    }
+
+    if (
+      (window.location.protocol === "http:" || window.location.protocol === "https:") &&
+      window.location.origin
+    ) {
+      return window.location.origin.replace(/\/+$/, "");
+    }
+
+    return "https://your-backend.onrender.com";
+  };
+
+  const API_BASE_URL = resolveApiBaseUrl();
   const API_HEALTH_URL = `${API_BASE_URL}/health`;
   const API_BOOKINGS_URL = `${API_BASE_URL}/book`;
   const API_REQUEST_TIMEOUT_MS = 10000;
